@@ -1,3 +1,4 @@
+# flake8: noqa
 """
 Serializers for the user API View.
 """

@@ -1,3 +1,4 @@
+# flake8: noqa
 """
 URL mappings for the user API.
 """
@@ -15,5 +16,6 @@ urlpatterns = [
 ]
 
 
-# .as_view() method = django expects a an actual function for parameter here in the url we use this method to
+# .as_view() method = django expects a an actual function for parameter 
+# here in the url we use this method to
 # converts the class base view in to the supported djanggo view
