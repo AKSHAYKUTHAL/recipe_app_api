@@ -1,4 +1,3 @@
----
 name: Checks
 
 on: [push]
@@ -8,16 +7,27 @@ jobs:
     name: Test and Lint
     runs-on: ubuntu-20.04
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Test
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Build and start services
+        run: docker-compose up -d
+      
+      # Here is where you insert the sleep step
+      - name: Wait for DB to be ready
+        run: sleep 10
+      
+      - name: Run tests
         run: docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py test"
-      - name: Lint
+      
+      - name: Run lint
         run: docker-compose run --rm app sh -c "flake8"
-
-
