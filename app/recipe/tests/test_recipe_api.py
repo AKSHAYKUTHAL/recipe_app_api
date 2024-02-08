@@ -348,45 +348,49 @@ class PrivateRecipeApiTests(TestCase):
             ).exists()
             self.assertTrue(exists)
 
-#     def test_create_ingredient_on_update(self):
-#         """Test creating an ingredient when updating a recipe."""
-#         recipe = create_recipe(user=self.user)
 
-#         payload = {'ingredients': [{'name': 'Limes'}]}
-#         url = detail_url(recipe.id)
-#         res = self.client.patch(url, payload, format='json')
+    def test_create_ingredient_on_update(self):
+        """Test creating an ingredient when updating a recipe."""
+        recipe = create_recipe(user=self.user)
 
-#         self.assertEqual(res.status_code, status.HTTP_200_OK)
-#         new_ingredient = Ingredient.objects.get(user=self.user, name='Limes')
-#         self.assertIn(new_ingredient, recipe.ingredients.all())
+        payload = {'ingredients': [{'name': 'Limes'}]}
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload, format='json')
 
-#     def test_update_recipe_assign_ingredient(self):
-#         """Test assigning an existing ingredient when updating a recipe."""
-#         ingredient1 = Ingredient.objects.create(user=self.user, name='Pepper')
-#         recipe = create_recipe(user=self.user)
-#         recipe.ingredients.add(ingredient1)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        new_ingredient = Ingredient.objects.get(user=self.user, name='Limes')
+        self.assertIn(new_ingredient, recipe.ingredients.all())
 
-#         ingredient2 = Ingredient.objects.create(user=self.user, name='Chili')
-#         payload = {'ingredients': [{'name': 'Chili'}]}
-#         url = detail_url(recipe.id)
-#         res = self.client.patch(url, payload, format='json')
 
-#         self.assertEqual(res.status_code, status.HTTP_200_OK)
-#         self.assertIn(ingredient2, recipe.ingredients.all())
-#         self.assertNotIn(ingredient1, recipe.ingredients.all())
+    def test_update_recipe_assign_ingredient(self):
+        """Test assigning an existing ingredient when updating a recipe."""
+        ingredient1 = Ingredient.objects.create(user=self.user, name='Pepper')
+        recipe = create_recipe(user=self.user)
+        recipe.ingredients.add(ingredient1)
 
-#     def test_clear_recipe_ingredients(self):
-#         """Test clearing a recipes ingredients."""
-#         ingredient = Ingredient.objects.create(user=self.user, name='Garlic')
-#         recipe = create_recipe(user=self.user)
-#         recipe.ingredients.add(ingredient)
+        ingredient2 = Ingredient.objects.create(user=self.user, name='Chili')
+        payload = {'ingredients': [{'name': 'Chili'}]}
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload, format='json')
 
-#         payload = {'ingredients': []}
-#         url = detail_url(recipe.id)
-#         res = self.client.patch(url, payload, format='json')
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn(ingredient2, recipe.ingredients.all())
+        self.assertNotIn(ingredient1, recipe.ingredients.all())
 
-#         self.assertEqual(res.status_code, status.HTTP_200_OK)
-#         self.assertEqual(recipe.ingredients.count(), 0)
+
+    def test_clear_recipe_ingredients(self):
+        """Test clearing a recipes ingredients."""
+        ingredient = Ingredient.objects.create(user=self.user, name='Garlic')
+        recipe = create_recipe(user=self.user)
+        recipe.ingredients.add(ingredient)
+
+        payload = {'ingredients': []}
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(recipe.ingredients.count(), 0)
+
 
 #     def test_filter_by_tags(self):
 #         """Test filtering recipes by tags."""
@@ -407,6 +411,7 @@ class PrivateRecipeApiTests(TestCase):
 #         self.assertIn(s1.data, res.data)
 #         self.assertIn(s2.data, res.data)
 #         self.assertNotIn(s3.data, res.data)
+
 
 #     def test_filter_by_ingredients(self):
 #         """Test filtering recipes by ingredients."""
