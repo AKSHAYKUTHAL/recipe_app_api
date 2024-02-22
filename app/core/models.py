@@ -23,6 +23,7 @@ def recipe_image_file_path(instance, filename):
 
 
 
+
 class UserManager(BaseUserManager):
     """Manager for users."""
 
